@@ -31,10 +31,13 @@ jobs:
         run: git clone ${{ github.event.inputs.github_link }} project
 
       - name: Install dependencies
-        run: cd project && pnpm install --frozen-lockfile
+        run: cd project/capacitor && pnpm install --frozen-lockfile
+
+      - name: Build native
+        run: cd project/capacitor && npm run build:native
 
       - name: Build the app
-        run: cd project && npm run build:android
+        run: cd project/capacitor && npm run build:android
 
       - name: Setup JDK 11
         uses: actions/setup-java@v2
@@ -43,10 +46,10 @@ jobs:
           java-version: '11'
 
       - name: Build Debug APK
-        run: cd project/android && ./gradlew assembleDebug
+        run: cd project/capacitor/android && ./gradlew assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v2
         with:
           name: app-debug-apk
-          path: project/android/app/build/outputs/apk/debug/*.apk
+          path: project/capacitor/android/app/build/outputs/apk/debug/*.apk
