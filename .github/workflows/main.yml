@@ -19,14 +19,17 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v3
 
-      - name: Clone project
-        run: git clone ${{ github.event.inputs.github_link }} project
-
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: '16'
           cache: 'pnpm'
+
+      - name: Install PNPM
+        run: npm install -g pnpm
+
+      - name: Clone project
+        run: git clone ${{ github.event.inputs.github_link }} project
 
       - name: Install dependencies
         run: cd project && pnpm install --frozen-lockfile
