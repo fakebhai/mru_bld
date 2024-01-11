@@ -33,9 +33,6 @@ jobs:
       - name: Install dependencies
         run: cd project/capacitor && pnpm install --frozen-lockfile
 
-      - name: Build native
-        run: cd project/capacitor && npm run build:native
-
       - name: Build the app
         run: cd project/capacitor && npm run build:android
 
