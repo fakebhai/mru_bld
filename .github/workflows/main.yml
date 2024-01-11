@@ -33,14 +33,23 @@ jobs:
       - name: Install dependencies
         run: cd project/capacitor && pnpm install --frozen-lockfile
 
-      - name: Build the app
-        run: cd project/capacitor && npm run build:android
+      - name: Build native
+        run: cd project/capacitor && npm run build:native
 
       - name: Setup JDK 11
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: '11'
+
+      - name: Setup Android SDK
+        run: |
+          wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
+          unzip commandlinetools-linux-7583922_latest.zip -d $HOME/sdk
+          echo "y" | $HOME/sdk/cmdline-tools/bin/sdkmanager --sdk_root=$HOME/sdk "platform-tools" "platforms;android-30" "build-tools;30.0.3"
+
+      - name: Build the app
+        run: cd project/capacitor && npm run build:android
 
       - name: Build Debug APK
         run: cd project/capacitor/android && ./gradlew assembleDebug
